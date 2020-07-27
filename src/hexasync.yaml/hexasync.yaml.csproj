@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageId>hexasync.yaml</PackageId>
+    <Title>HexaSync YamlDotNet Serializer</Title>
+    <Authors>Gia, Le Huu Hoang (giale@beehexa.com)</Authors>
+    <Description>A wrapper of YamlDotNet</Description>
+    <PackageTags>YamlDotNet</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
