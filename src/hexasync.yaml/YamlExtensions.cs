@@ -12,6 +12,7 @@ namespace hexasync.yaml
     public static class YamlConfiguration
     {
         private static List<ITag> RegisteredTags { get; } = new List<ITag>();
+        // private static IDeserializer _desrializer;
         public static void RegisterTagsFromAssembly(Assembly assembly)
         {
             var type = typeof(ITag);
@@ -35,6 +36,9 @@ namespace hexasync.yaml
 
         public static IDeserializer GetDeserializer(string filePath = null)
         {
+            // if (_desrializer != null) {
+            //     return _desrializer;
+            // }
             var builder = new DeserializerBuilder();
             builder = builder
                 .IgnoreFields()
@@ -53,10 +57,12 @@ namespace hexasync.yaml
 
                 builder = builder
                     .WithTypeConverter(
-                    new FileTypeConverter(builder.Build(), RegisteredTags, filePath),
+                    new FileTypeConverter(RegisteredTags, filePath),
                     s => s.OnTop());
             }
             
+            // _desrializer = builder.Build();
+            // return _desrializer;
             return builder.Build();
         }
     }

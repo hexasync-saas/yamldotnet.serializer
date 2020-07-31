@@ -11,13 +11,11 @@ namespace hexasync.yaml
     public class FileTypeConverter : IYamlTypeConverter
     {
         private string filePath;
-        private readonly IDeserializer deserializer;
         private readonly IEnumerable<ITag> tags;
 
-        public FileTypeConverter(IDeserializer deserializer, IEnumerable<ITag> tags, string filePath)
+        public FileTypeConverter(IEnumerable<ITag> tags, string filePath)
         {
             this.filePath = filePath;
-            this.deserializer = deserializer;
             this.tags = tags;
         }
 
@@ -41,9 +39,14 @@ namespace hexasync.yaml
             }
 
             var targetFile = Path.Combine(rootPath, key.Value);
+            targetFile = Path.GetFullPath(targetFile);
             var input = File.ReadAllText(targetFile);
-            var tag = tags.FirstOrDefault(t => t.GetType() == type);
-            var data = deserializer.Deserialize(input, tag.OutType);
+            var typeName = type.FullName;
+            var tag = tags.FirstOrDefault(t => t.GetType().FullName == type.FullName);
+            // var deserializer = YamlConfiguration.GetDeserializer(filePath);
+            // var data = deserializer.Deserialize(input, tag.OutType);
+            var nextDirectory = Path.GetDirectoryName(targetFile);
+            var data = input.DeserializeFromYaml(tag.OutType, nextDirectory);
             return data;
         }
 
